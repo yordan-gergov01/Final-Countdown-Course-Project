@@ -1,8 +1,22 @@
+import { forwardRef, useImperativeHandle, useRef } from "react";
 import { ResultModalProps } from "../types/interfaces";
+import { ResultModalHandle } from "../types/types";
 
-function ResultModal({ result, targetTime }: ResultModalProps) {
+function ResultModal(
+  { result, targetTime }: ResultModalProps,
+  ref: React.Ref<ResultModalHandle>
+) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+
+  useImperativeHandle(ref, () => {
+    return {
+      open() {
+        dialogRef.current?.showModal();
+      },
+    };
+  });
   return (
-    <dialog className="result-modal">
+    <dialog ref={dialogRef} className="result-modal">
       <h2>You {result}</h2>
       <p>
         The target time was <strong>{targetTime} seconds.</strong>
@@ -18,4 +32,4 @@ function ResultModal({ result, targetTime }: ResultModalProps) {
   );
 }
 
-export default ResultModal;
+export default forwardRef<ResultModalHandle, ResultModalProps>(ResultModal);

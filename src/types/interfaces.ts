@@ -1,3 +1,4 @@
+import { RefObject } from "react";
 import { ResultType } from "./types";
 
 export interface TimerChallengeProps {
